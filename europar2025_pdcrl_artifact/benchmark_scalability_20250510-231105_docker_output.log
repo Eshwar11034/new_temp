@@ -1,0 +1,665 @@
+[INFO] Master runner script CWD: /workspace/parqr_code
+[INFO] ===== Starting Scalability Benchmark (Experiment 2 - Fig 4a, 4b) =====
+[INFO] --- Running for 26 THREADS ---
+[INFO]   Matrix Size: 300x300
+[INFO] Ensuring matrix 300x300 at testcase/matrix_300x300.txt...
+[INFO] Generating matrix 300x300 at testcase/matrix_300x300.txt...
+[INFO] Successfully generated matrix: testcase/matrix_300x300.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2.00 ms
+[INFO]       Avg time: 2.00 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 3.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 3.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 3.00 ms
+[INFO]       Avg time: 3.00 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 26
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 12.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 11.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 11.00 ms
+[INFO]       Avg time: 11.33 ms
+[INFO]   Matrix Size: 2400x2400
+[INFO] Ensuring matrix 2400x2400 at testcase/matrix_2400x2400.txt...
+[INFO] Generating matrix 2400x2400 at testcase/matrix_2400x2400.txt...
+[INFO] Successfully generated matrix: testcase/matrix_2400x2400.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 162.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 161.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 158.00 ms
+[INFO]       Avg time: 160.33 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 351.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 332.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 310.00 ms
+[INFO]       Avg time: 331.00 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 26
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1747.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1686.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1657.00 ms
+[INFO]       Avg time: 1696.67 ms
+[INFO]   Matrix Size: 4800x4800
+[INFO] Ensuring matrix 4800x4800 at testcase/matrix_4800x4800.txt...
+[INFO] Generating matrix 4800x4800 at testcase/matrix_4800x4800.txt...
+[INFO] Successfully generated matrix: testcase/matrix_4800x4800.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2444.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2077.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2032.00 ms
+[INFO]       Avg time: 2184.33 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2041.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2078.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 2156.00 ms
+[INFO]       Avg time: 2091.67 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 26
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 10756.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 11554.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 10513.00 ms
+[INFO]       Avg time: 10941.00 ms
+[INFO]   Matrix Size: 7200x7200
+[INFO] Ensuring matrix 7200x7200 at testcase/matrix_7200x7200.txt...
+[INFO] Generating matrix 7200x7200 at testcase/matrix_7200x7200.txt...
+[INFO] Successfully generated matrix: testcase/matrix_7200x7200.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 7163.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 6612.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 6594.00 ms
+[INFO]       Avg time: 6789.67 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 6685.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 19119.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 16184.00 ms
+[INFO]       Avg time: 13996.00 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 26
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 33343.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 42361.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 48193.00 ms
+[INFO]       Avg time: 41299.00 ms
+[INFO]   Matrix Size: 10800x10800
+[INFO] Ensuring matrix 10800x10800 at testcase/matrix_10800x10800.txt...
+[INFO] Using existing matrix: testcase/matrix_10800x10800.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 44829.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 20502.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 27077.00 ms
+[INFO]       Avg time: 30802.67 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 26
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 73092.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 52268.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 36091.00 ms
+[INFO]       Avg time: 53817.00 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 26
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 119025.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 110655.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 139638.00 ms
+[INFO]       Avg time: 123106.00 ms
+[INFO] --- Running for 52 THREADS ---
+[INFO]   Matrix Size: 300x300
+[INFO] Ensuring matrix 300x300 at testcase/matrix_300x300.txt...
+[INFO] Using existing matrix: testcase/matrix_300x300.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 3.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 25.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 33.00 ms
+[INFO]       Avg time: 20.33 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 4.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 5.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 4.00 ms
+[INFO]       Avg time: 4.33 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 52
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 17.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 16.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_300x300.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 16.00 ms
+[INFO]       Avg time: 16.33 ms
+[INFO]   Matrix Size: 2400x2400
+[INFO] Ensuring matrix 2400x2400 at testcase/matrix_2400x2400.txt...
+[INFO] Using existing matrix: testcase/matrix_2400x2400.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 380.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 271.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 218.00 ms
+[INFO]       Avg time: 289.67 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 202.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 190.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 182.00 ms
+[INFO]       Avg time: 191.33 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 52
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1462.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1602.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_2400x2400.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1481.00 ms
+[INFO]       Avg time: 1515.00 ms
+[INFO]   Matrix Size: 4800x4800
+[INFO] Ensuring matrix 4800x4800 at testcase/matrix_4800x4800.txt...
+[INFO] Using existing matrix: testcase/matrix_4800x4800.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1427.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1555.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1456.00 ms
+[INFO]       Avg time: 1479.33 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1293.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1264.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 1189.00 ms
+[INFO]       Avg time: 1248.67 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 52
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 6192.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 6219.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_4800x4800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 12090.00 ms
+[INFO]       Avg time: 8167.00 ms
+[INFO]   Matrix Size: 7200x7200
+[INFO] Ensuring matrix 7200x7200 at testcase/matrix_7200x7200.txt...
+[INFO] Using existing matrix: testcase/matrix_7200x7200.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 5051.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 12145.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 4801.00 ms
+[INFO]       Avg time: 7332.33 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 5663.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 5760.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 5932.00 ms
+[INFO]       Avg time: 5785.00 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 52
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 21968.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 35916.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_7200x7200.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 38760.00 ms
+[INFO]       Avg time: 32214.67 ms
+[INFO]   Matrix Size: 10800x10800
+[INFO] Ensuring matrix 10800x10800 at testcase/matrix_10800x10800.txt...
+[INFO] Using existing matrix: testcase/matrix_10800x10800.txt
+[INFO]     Config: Without Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 18
+[INFO] Updating main.cpp: BETA = 18
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 46148.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 58431.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 53546.00 ms
+[INFO]       Avg time: 52708.33 ms
+[INFO]     Config: With Priority
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 52
+[INFO] Updating main.cpp: ALPHA = 20
+[INFO] Updating main.cpp: BETA = 20
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 1
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 55576.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 58615.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 54178.00 ms
+[INFO]       Avg time: 56123.00 ms
+[INFO]     Config: Barrier
+[INFO] Updating Makefile: MAIN_SRC = barrier_main.cpp
+[INFO] Updating barrier_main.cpp: NUM_THREADS = 52
+[INFO] Updating barrier_main.cpp: ALPHA = 16
+[INFO] Updating barrier_main.cpp: BETA = 16
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO]       Run 1/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 107406.00 ms
+[INFO]       Run 2/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 104374.00 ms
+[INFO]       Run 3/3
+[INFO] Executing: ./a.out testcase/matrix_10800x10800.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 110840.00 ms
+[INFO]       Avg time: 107540.00 ms
+[INFO] Scalability results saved to results/scalability_results.csv
+[INFO] Plot saved to results/fig4a_scalability_26threads.png
+[INFO] Plot saved to results/fig4b_scalability_52threads.png
+[INFO] ===== Scalability Benchmark FINISHED =====
+[INFO] Benchmark experiment(s) 'scalability' finished.
+[INFO] All results for this run were saved inside the container at: /workspace/parqr_code/results
+BENCHMARK_COMPLETED:scalability

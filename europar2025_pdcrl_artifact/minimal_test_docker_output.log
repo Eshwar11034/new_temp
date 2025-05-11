@@ -1,0 +1,20 @@
+[INFO] Master runner script CWD: /workspace/parqr_dts_code
+[INFO] Running single configuration from: /workspace/config/minimal_test_config.json
+[INFO] --- Running Test From Dict: Minimal test with Intel (no priority) on a small matrix. ---
+[INFO] Updating Makefile: MAIN_SRC = main.cpp
+[INFO] Updating main.cpp: NUM_THREADS = 2
+[INFO] Updating main.cpp: ALPHA = 8
+[INFO] Updating main.cpp: BETA = 16
+[INFO] Updating main.cpp: USE_PRIORITY_MAIN_QUEUE = 0
+[INFO] Compiling C++ code (make clean && make -j)...
+[INFO] Compilation successful.
+[INFO] Ensuring matrix 1024x1024 at testcase/matrix_1024x1024.txt...
+[INFO] Generating matrix 1024x1024 at testcase/matrix_1024x1024.txt...
+[INFO] Successfully generated matrix: testcase/matrix_1024x1024.txt
+[INFO] --- Cycle 1/1 ---
+[INFO] Executing: ./a.out testcase/matrix_1024x1024.txt
+[INFO] Execution finished.
+[INFO] Extracted execution time: 154.00 ms
+[INFO] --- Average execution time over 1 successful cycle(s): 154.00 ms ---
+[INFO] Minimal test 'Minimal test with Intel (no priority) on a small matrix.' completed. Avg time: 154.00 ms
+MINIMAL_TEST_PASSED: Average time 154.00 ms
