@@ -1,0 +1,64 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Theme
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+% Encoding & fonts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Packages
+\usepackage{amsmath,amssymb}
+\usepackage{algorithm}      % keep available for later slides (avoid floats inside columns)
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+% Colors
+\definecolor{pivotblue}{RGB}{32,102,170}
+\definecolor{updategreen}{RGB}{56,142,60}
+\definecolor{depred}{RGB}{198,40,40}
+\definecolor{accent}{RGB}{123,31,162}
+
+% Compact bullets
+\newenvironment{tightitem}{%
+  \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+}{\end{itemize}}
+
+% Metadata
+\title[Parallel In-place QR for SLSQP]{Efficient Task-Graph Scheduling for In-place Householder QR in SLSQP}
+\subtitle{Dependency-aware two-queue scheduling for barrier-free parallelism}
+\author{Your Name}
+\institute{Your Lab / Department, Your Institute}
+\date{Euro-Par 2025}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Import slides
+\input{Slide1}
+\input{Slide2}
+\input{Slide3}
+\input{Slide4}
+\input{Slide5}
+\input{Slide6}
+\input{Slide7}
+\input{Slide8}
+\input{Slide9}
+\input{SLide10}
+\input{Slide11}
+\input{Slide12}
+\input{Slide13}
+\input{Slide14}
+\input{Slide15}
+\input{Slide16}
+\input{Slide18}
+
+\end{document}

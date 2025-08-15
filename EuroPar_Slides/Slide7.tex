@@ -1,0 +1,34 @@
+% Slide 7 — Two-Queue Scheduler: Demo (A — start)
+\begin{frame}{Two-Queue Scheduler — Demo (A: Start)}
+\small
+\begin{columns}[T,onlytextwidth]
+  \column{0.46\textwidth}
+  \begin{block}{State A}
+    \begin{tightitem}
+      \item Parents$(T_{i,j})=\{\,T_{i,i},\,T_{i-1,j}\,\}$; ignore $T_{0,j}$.
+      \item Initially only the pivot $T_{1,1}$ is ready $\Rightarrow$ in \textbf{main}.
+      \item \textbf{Wait is empty.} Nothing goes to wait until a dequeued task fails its check.
+    \end{tightitem}
+  \end{block}
+
+  \column{0.54\textwidth}
+  \centering
+  \begin{tikzpicture}[x=0.45cm,y=0.45cm,>=Stealth, every node/.style={transform shape,font=\scriptsize}]
+    \tikzset{queue/.style={draw,rounded corners=0pt}}
+    \tikzset{ready/.style={draw,fill=updategreen!65,rounded corners=1pt}}
+    \tikzset{waitt/.style={draw,fill=gray!25,rounded corners=1pt}}
+    \tikzset{qlabel/.style={draw,white,fill=white,inner sep=2pt}}
+
+    % Main
+    \draw[queue,gray!70] (0,10) -- (18,10);
+    \draw[queue,gray!70] (0,8.7) -- (18,8.7);
+    \node[qlabel,anchor=east] at (17.5,9.35) {Main Queue};
+    \node[ready,minimum width=1.8cm,minimum height=0.7cm] at (3.2,9.35) {$T_{1,1}$};
+
+    % Wait (empty)
+    \draw[queue,gray!70] (0,3.7) -- (18,3.7);
+    \draw[queue,gray!70] (0,2.4) -- (18,2.4);
+    \node[qlabel,anchor=east] at (17.5,3.05) {Wait Queue};
+  \end{tikzpicture}
+\end{columns}
+\end{frame}

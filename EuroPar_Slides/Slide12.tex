@@ -1,0 +1,76 @@
+% Slide 12 — Task Granularity: α (pivots) and β (rows)
+\begin{frame}{Task Granularity — $\alpha$ (Pivots) and $\beta$ (Rows)}
+\small
+\begin{columns}[T,onlytextwidth]
+
+  % ---------- LEFT: definitions & tradeoffs ----------
+  \column{0.52\textwidth}
+  \begin{block}{Definitions}
+    \begin{tightitem}
+      \item $\alpha$: number of \emph{pivot iterations} coalesced into one Task\,1 (build $\alpha$ reflectors).
+      \item $\beta$: number of \emph{rows updated per task} in Task\,2 when applying a reflector.
+      \item Spawn policy with two queues: children from any executed task $\rightarrow$ \textbf{main}; dequeued \& not-ready $\rightarrow$ \textbf{wait}.
+    \end{tightitem}
+  \end{block}
+
+  \vspace{1mm}
+  \begin{block}{Why these matter}
+    \begin{tightitem}
+      \item Small $\alpha,\beta$ $\Rightarrow$ many tiny tasks $\Rightarrow$ higher scheduling overhead.
+      \item Large $\alpha$ $\Rightarrow$ fewer pivots in flight; risks underutilization if a pivot lags.
+      \item Large $\beta$ $\Rightarrow$ less parallel width on updates; may help cache locality.
+      \item Practical aim: balance \textbf{ready width} for the main queue vs.\ overhead and locality.
+    \end{tightitem}
+  \end{block}
+
+  \vspace{1mm}
+  {\scriptsize \emph{Note: we omit brute-force parameter sweeps here per talk guidelines.}}
+
+  % ---------- RIGHT: visual (α block of pivots + β-row chunk updates) ----------
+  \column{0.48\textwidth}
+  \centering
+  \begin{tikzpicture}[scale=0.78, every node/.style={transform shape,font=\scriptsize}]
+    % Colors (use deck colors)
+    \tikzset{pivotblk/.style ={fill=accent!20, draw=accent}}
+    \tikzset{updateblk/.style={fill=updategreen!55, draw=updategreen!50!black}}
+    \tikzset{outline/.style ={draw=gray!60}}
+
+    % --- Upper-triangular grid (schematic) ---
+    \def\n{7}
+    \foreach \row in {1,...,\n}{
+      \foreach \col in {\row,...,\n}{
+        \node[outline,minimum width=0.42cm,minimum height=0.42cm] (A\row\col) at (0.42*\col,-0.42*\row) {};
+      }
+    }
+
+    % --- Alpha window along the diagonal (α pivots coalesced) ---
+    \def\alpha{3}
+    \foreach \k in {1,...,\alpha}{
+      \fill[pivotblk] (A\k\k.south west) rectangle (A\k\k.north east);
+    }
+    \node[anchor=west] at (0.42*(\alpha+1)+0.25,-0.42*1) {$\alpha$ pivots};
+
+    % Arrows indicating children spawn to main (ready-first)
+    \foreach \col in {2,...,\n}{
+      \draw[-{Stealth[length=2mm]},accent] (A1 1.east) -- ++(0.22,0) |- (A1\col.center);
+    }
+
+    % --- Beta chunk on an update (rows-per-task) ---
+    % choose reflector from i=2 applied to j=5; highlight beta rows
+    \def\i{2} \def\j{5} \def\beta{2}
+    % draw a bracket-like rectangle covering beta rows under column j
+    \draw[updateblk,very thick,rounded corners]
+      ($(A\i\j.south west)+(0.02,-0.02)$) rectangle
+      ($(A\the\numexpr\i+\beta-1\relax\j.north east)+(-0.02,0.02)$);
+    \node[anchor=west] at (0.42*(\j+1)+0.25,-0.42*(\i+\beta-0.5))
+      {$\beta$ rows per update-task};
+
+    % Tiny legend
+    \draw[pivotblk] (0.3,-0.42*(\n+1)) rectangle ++(0.36,0.22);
+    \node[anchor=west] at (0.7,-0.42*(\n+1)+0.11) {pivot block ($\alpha$)};
+    \draw[updateblk,very thick] (2.4,-0.42*(\n+1)) rectangle ++(0.36,0.22);
+    \node[anchor=west] at (2.8,-0.42*(\n+1)+0.11) {update chunk ($\beta$)};
+  \end{tikzpicture}
+
+\end{columns}
+\end{frame}

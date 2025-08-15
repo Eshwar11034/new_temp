@@ -1,0 +1,24 @@
+\begin{frame}{Impact in SLSQP (End-to-End)}
+\small
+\begin{columns}[T,onlytextwidth]
+  \column{0.58\textwidth}
+  % OPTION A (preferred): input the original TikZ/PGFPlots figure file from your source
+  % \input{<PATH-TO-YOUR-SOURCE-FIGURE-FOR-6>.tex}
+
+  % OPTION B: include the compiled figure PDF/PNG from your source
+  \centering
+  \includegraphics[width=\linewidth]{figs/fig6_slsqp_performance}
+
+  \vspace{1mm}
+  {\scriptsize Source: EuroPar camera-ready, Fig. 6 (SLSQP performance).  :contentReference[oaicite:4]{index=4}  :contentReference[oaicite:5]{index=5} }
+
+  \column{0.42\textwidth}
+  \begin{block}{Key takeaway (from paper)}
+    \begin{itemize}\itemsep3pt
+      \item Parallel-QR SLSQP cuts wall-time dramatically as DOF grows.
+      \item At DOF \(=2816\): \(\sim\)1.21 hrs (parallel QR) vs \(\sim\)18.91 hrs (sequential QR).%
+      {\scriptsize \;:contentReference[oaicite:6]{index=6}}
+    \end{itemize}
+  \end{block}
+\end{columns}
+\end{frame}

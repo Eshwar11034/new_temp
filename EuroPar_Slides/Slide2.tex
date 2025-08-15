@@ -1,0 +1,52 @@
+% Slide 2 — Householder QR — Sequential Algorithm (paper-style)
+\begin{frame}{Householder QR — Sequential Algorithm}
+  \begin{columns}[T,onlytextwidth]
+
+    % ----- Left: Algorithm (paper-style names) -----
+    \column{0.56\textwidth}
+    \begin{block}{Sequential in-place Householder QR}
+      \begin{algorithmic}[1]
+        \State \textbf{Input:} $A\in\mathbb{R}^{m\times n}$
+        \State \textbf{Output:} Upper $R$, reflectors in lower, scalars $b[1..\min(m,n)]$
+        \For{$i=1$ to $\min(m,n)$}
+          \State $(u,b)\leftarrow$ \textcolor{pivotblue}{\textsc{update\_pivot\_row}}$(A,i)$
+          \For{$j=i+1$ to $n$}
+            \State \textcolor{updategreen}{\textsc{update\_non\_pivot\_rows}}$(A,i,j,u,b)$
+          \EndFor
+        \EndFor
+      \end{algorithmic}
+    \end{block}
+
+    % ----- Right: Flowchart that mirrors the algorithm (safe TikZ) -----
+    \column{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\small, node distance=4mm, every node/.style={transform shape}, scale=0.7]
+      \tikzstyle{p}=[rectangle,rounded corners,draw,align=center,inner sep=3pt,minimum width=3.0cm,fill=gray!10]
+      \tikzstyle{actA}=[p,fill=pivotblue!12]
+      \tikzstyle{actB}=[p,fill=updategreen!12]
+
+      % loop structure
+      \node[p] (start) {Start};
+      \node[p,below=of start] (loopi) {\textbf{for} $i=1\ldots \min(m,n)$};
+      \node[actA,below=of loopi] (pivot) {\textsc{update\_pivot\_row}$(A,i)\Rightarrow (u,b)$};
+      \node[p,below=of pivot] (loopj) {\textbf{for} $j=i+1\ldots n$};
+      \node[actB,below=of loopj] (trail) {\textsc{update\_trailing\_non\_pivot\_row}$(A,i,j,u,b)$};
+      \node[p,below=of trail] (endj) {end \textbf{for} ($j$)};
+      \node[p,below=of endj] (endi) {end \textbf{for} ($i$)};
+      \node[p,below=of endi] (done) {Upper $R$; lower stores $u$; $b[i]$ side array};
+
+      % arrows
+      \draw[-{Stealth}] (start) -- (loopi);
+      \draw[-{Stealth}] (loopi) -- (pivot);
+      \draw[-{Stealth}] (pivot) -- (loopj);
+      \draw[-{Stealth}] (loopj) -- (trail);
+      \draw[-{Stealth}] (trail) -- (endj);
+      \draw[-{Stealth}] (endj) -- (endi);
+      \draw[-{Stealth}] (endi) -- (done);
+    \end{tikzpicture}
+
+    \vspace{1mm}
+    \small \textit{In-place contract: $R$ in upper triangle; reflectors $u$ in lower; scalars $b[i]$ are preserved for SLSQP.}
+
+  \end{columns}
+\end{frame}

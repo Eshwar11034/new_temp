@@ -1,0 +1,46 @@
+% Slide 16 — Conclusion (+ Artifact QR)
+% Tip: set your artifact URL here (repo or landing page)
+\providecommand{\artifactURL}{https://example.com/your-artifact} % <-- replace
+
+\begin{frame}{Conclusion \& Artifact}
+\small
+\begin{columns}[T,onlytextwidth]
+
+  % -------- Left: concise conclusion --------
+  \column{0.62\textwidth}
+  \begin{block}{What we did}
+    \begin{tightitem}
+      \item Cast in-place Householder QR as a dependency DAG $T_{i,j}$ with parents $\{T_{i,i},\,T_{i-1,j}\}$.
+      \item Replaced \textbf{global barriers} with a \textbf{two-queue, ready-first} scheduler:
+            spawn $\rightarrow$ \emph{main}, dequeue-not-ready $\rightarrow$ \emph{wait}, then promote.
+      \item Preserved SLSQP’s \emph{in-place} layout (upper $\rightarrow R$, lower $\rightarrow u$, side array $\rightarrow b$).
+    \end{tightitem}
+  \end{block}
+
+  \vspace{1mm}
+  \begin{block}{Why it works}
+    \begin{tightitem}
+      \item Reduces tail waiting; enables overlap once parents are satisfied.
+      \item Keeps workers busy while releasing the \textbf{critical path} early.
+      \item Plays well with task granularity ($\alpha$ pivots, $\beta$ rows).
+    \end{tightitem}
+  \end{block}
+
+  \vspace{1mm}
+  \begin{block}{What you saw}
+    \begin{tightitem}
+      \item \textbf{Scales with matrix size} and \textbf{with threads} (paper figures).
+      \item \textbf{Improves end-to-end SLSQP wall-time} without resorting to brute-force sweeps.
+    \end{tightitem}
+  \end{block}
+
+  % -------- Right: Artifact QR --------
+  \column{0.38\textwidth}
+  \begin{block}{Artifact (scan me)}
+    \centering
+    \qrcode[height=3.2cm]{\artifactURL}\\[2mm]
+    \footnotesize \href{\artifactURL}{\artifactURL}
+  \end{block}
+
+\end{columns}
+\end{frame}
