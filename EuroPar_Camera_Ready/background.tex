@@ -1,0 +1,78 @@
+\subsection{SLSQP $\rightarrow$ Descent Direction Computation $\rightarrow$ QR}
+The Sequential Least Squares Programming (SLSQP) problem is formulated as a constrained optimization problem, typically expressed in the following mathematical form:
+
+\begin{equation}
+    \min_{x} f(x),
+\end{equation}
+%\vspace{-0.4cm}
+\begin{equation}
+    \text{subject to:} \quad h(x) = 0, \quad h: \mathbb{R}^n \to \mathbb{R}^m,
+\end{equation}
+\begin{equation}
+    g(x) \leq 0, \quad g: \mathbb{R}^n \to \mathbb{R}^p.
+\end{equation}
+
+SLSQP is an efficient algorithm for solving NLP problems subject to equality and inequality constraints. It seeks to find the minimum of a non-linear objective function while ensuring the satisfaction of constraints. The core of SLSQP involves iteratively approximating the solution using a line search approach to compute the descent direction.
+
+SLSQP determines the descent direction by solving a QP sub-problem at each iteration. This QP is derived from the first and second derivatives, gradients and Hessians, of the Lagrangian function associated with the objective function and constraints. QR factorization plays a pivotal role in this process by providing an efficient method to solve the system of linear equations arising from the Karush-Kuhn-Tucker (KKT) conditions\cite{cfc5dc07425343f08f3c8ee5ae8f7ddc}.
+
+% \subsubsection{Computation of the Descent Direction}
+% The computation of the descent direction follows these key steps:
+% \begin{enumerate}
+% 	\item \textbf{Formulation of the KKT Conditions:} The optimization problem is first expressed in terms of the KKT conditions, leading to a system of linear equations:
+% 	\begin{equation}
+% 		H d = -\nabla L
+% 	\end{equation}
+% 	where \( H \) is the Hessian matrix, \( d \) is the descent direction, and \( \nabla L \) is the gradient of the Lagrangian function.
+% 	%\vspace{0.1cm}
+% 	\item \textbf{QR Factorization:} To efficiently solve this system, the Hessian matrix \( H \) is factorized using QR decomposition:
+% 	\begin{equation}
+% 		H = QR
+% 	\end{equation}
+% 	where \( Q \) is an orthogonal matrix and \( R \) is an upper triangular matrix. This factorization allows the linear system to be solved in two steps:
+% 	\begin{equation}
+% 		R d = -Q^T \nabla L
+% 	\end{equation}
+% 	This transformation simplifies the computation of \( d \) via back substitution.
+% \end{enumerate}
+
+Using QR factorization, SLSQP ensures numerical stability and efficiency in solving the KKT system, thereby accelerating the computation of descent directions in constrained optimization problems.
+
+\subsection{QR Factorization using Householder Transformations}
+
+Given a matrix \( A \) of size \( m \times n \), the goal is to compute an orthogonal matrix \( Q \) and an upper triangular matrix \( R \) such that: $A = QR$. The Householder algorithm achieves this by iteratively constructing and applying reflection vectors to transform A into Q and R, either in-place or out-of-place. Considering the importance of \qrf in \slsqp, we next consider efficient ways to parallelize \qrf. 
+
+% \begin{itemize}
+	%     \item \textbf{Initialize:} Set \( Q = I \) (identity matrix) and \( R = A \).
+	%     \item \textbf{Loop through each column} index \( j \) from \( 1 \) to \( \min(m, n) \).
+	%     \item \textbf{Extract column vector} \( x = R[j:m, j] \) (subvector from column \( j \)).
+	%     \item \textbf{Compute Householder vector} \( u \):
+	%     \begin{itemize}
+		%         \item Compute \( \alpha = -x_1\!\cdot\!\|x\| \).
+		%         \item Set \( u = x + \alpha e_1 \), where \( e_1 \) is the first standard basis vector.
+		%         \item Normalize \( u = u / \|u\| \).
+		%     \end{itemize}
+	%     \item \textbf{Compute Householder matrix} using \( W = I - 2 \frac{uu^T}{\|u\|^2} \).
+	%     \item \textbf{Apply transformation:} Update \( R \leftarrow W R \) to zero out elements below the diagonal.
+	%     \item \textbf{Update} \( Q \leftarrow Q W^T \).
+	%     \item Repeat steps for all columns.
+	%     \item \textbf{Return} \( Q, R \) satisfying \( A = QR \).
+	% \end{itemize}
+
+\begin{algorithm}
+	\caption{QR Factorization using Householder Reflections}
+	\label{alg:householder_qr}
+	\begin{algorithmic}[1]
+		\State \textbf{Initialize:} Set \( Q = I \) (identity matrix) and \( R = A \).
+		\For{each column index \( j = 1 \) to \( \min(m, n) \)}
+		\State Extract column vector \( x = R[j:m, j] \).
+		\State Compute \( \alpha = -x_1 \cdot \|x\| \).
+		\State Set \( u = x + \alpha e_1 \), where \( e_1 \) is the first standard basis vector.
+		\State Normalize \( u = u / \|u\| \).
+		\State Compute Householder matrix \( W = I - 2 \frac{uu^T}{\|u\|^2} \).
+		\State Apply transformation: \( R \gets W R \).
+		\State Update \( Q \gets Q W^T \).
+		\EndFor\\
+		\Return \( Q, R \) satisfying \( A = QR \).
+	\end{algorithmic}
+\end{algorithm}

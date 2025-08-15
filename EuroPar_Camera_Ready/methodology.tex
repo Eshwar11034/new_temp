@@ -1,0 +1,262 @@
+% Algorithm \hyperref[alg:householder_qr]{1} outlines the mathematical framework underlying QR decomposition via Householder reflections. This formulation can be further expressed using Algorithm \hyperref[alg:alg_inplace_qr]{2}, which represents a standard computational structure frequently employed in linear algebra kernels such as QR factorization, Cholesky decomposition, and LU decomposition. The SLSQP algorithm from NLOPT library uses in-place QR factorization technique based on Householder transformations, adhering to the computational structure outlined in Algorithm \hyperref[alg:alg_inplace_qr]{2}.
+Algorithm \hyperref[alg:householder_qr]{1} outlines QR decomposition's mathematical logic via Householder reflections. This formulation is further expressed in Algorithm \hyperref[alg:alg_inplace_qr]{2}, representing the standard computational structure frequently employed in linear algebra kernels such as QR factorization, Cholesky decomposition, and LU decomposition. The SLSQP algorithm from the NLOPT library uses an in-place QR factorization technique based on Householder transformations.
+
+Algorithm \ref{alg:alg_inplace_qr} represents the in-place transformation of matrix A into the upper triangular matrix R. The algorithm relies on two key computational kernels: 1) \texttt{update\_pivot\_row} and 2) \texttt{update\_trailing\_non\_pivot\_row}. Both kernels operate at the row level, updating individual elements with a linear time complexity, each involving a fixed number of arithmetic operations.
+\begin{algorithm}
+	\caption{Transform matrix $A$ to upper-triangular form.} \label{alg:alg_inplace_qr}
+	\begin{algorithmic}[1]
+		\State \textbf{Input:} $A$, a $m \times n$ non-singular real matrix.
+		\For{$i = 1$ \textbf{to} $m$}
+		\State $(up, b) \gets \Call{\texttt{update\_pivot\_row}}{A, i}$
+		\For{$j = i+1$ to $n$}
+		\State \Call{\texttt{update\_trailing\_non\_pivot\_row}}{A, i, j, up}
+		\EndFor
+		\EndFor
+		\State \textbf{Output:} Matrix $A$ in upper-triangular form.
+	\end{algorithmic}
+\end{algorithm}
+
+In Algorithm \hyperref[alg:alg_inplace_qr]{2}, for a given value of $i$, $1\leq i\leq m$, all tasks $T_{i,*}$ represent computations at the $i^{th}$ iteration of the outer loop. The pivot update calculation of the $i^{th}$ row is performed first (task $T_{i,i}$), representing a call to the kernel \texttt{update\_pivot\_row}. Then all the rows of the entire trailing sub-matrix, with $j > i$, are updated (task $T_{i,j}$), by a  call to \texttt{update\_trailing\_non\_pivot\_row}. 
+
+%There is a total precedence order between the tasks. Let us write $T <_{seq} T'$ if task $T$ is executed before task $T'$ in the original sequential code \cite{Darte2000}. We have: $T_{1,1} <_{seq} T_{1,2} <_{seq} T_{1,3} <_{seq} \cdots <_{seq} T_{1,n} <_{seq} T_{2,2} <_{seq} T_{2,3} <_{seq} \cdots <_{seq} T_{n,n}$.
+
+%However, certain tasks can be executed in parallel if their order of execution does not affect the program's outcome. A sufficient condition for independence is that the tasks do not write to the same memory location, although they may read shared values \cite{Darte2000}.
+
+To model the dependency constraints between tasks, we construct a directed acyclic graph (DAG) \hyperref[fig:task_graph]{Fig. 1(b)}, where the vertices represent tasks, and the edges encode dependencies. An edge $e: T \rightarrow T '$ indicates that $ T '$ can start only after $ T $ is completed, regardless of the availability of resources. Each $T_{i,j}$ task in \hyperref[fig:task_graph]{Fig. 1(b)} represents a call to the kernel \texttt{update\_trailing\_non\_pivot\_row}, which can be executed in parallel once its parent tasks are complete. Therefore, any task $T_{i,j}$ always has two parent nodes $T_{i,i}$ and $T_{i-1,j}$ (except for all tasks $T_{i,j}$ in the first level of \hyperref[fig:task_graph]{Fig. 1(b)} where it has only one parent) whose execution must be completed before the execution of task $T_{i,j}$ can begin. The dependency of $T_{i,j}$ on $T_{i,i}$ denotes the dependency within a single iteration according to Algorithm \hyperref[alg:alg_inplace_qr]{2} where the pivot row update needs to be completed first before proceeding with the row updates of the non-pivot rows. However, the dependency of $T_{i,j}$ on $T_{i-i,j}$ denotes the dependency across iterations where a row in the given input matrix can only be updated in the current iteration if it had been successfully updated by a call to the kernel \texttt{update\_trailing\_non\_pivot\_row} in the previous iteration.
+%\vspace{-0.5cm}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=0.8cm, text centered, draw=black]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\begin{figure}
+	%\centering
+	% First Diagram
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance=1.8cm, scale=0.7, transform shape, xshift=0cm]
+			
+			% Nodes
+			\node (root) [startstop, fill=red!30] {Root Node};
+			\node (mq) [process, below of=root, fill=blue!30] {Main Queue};
+			\node (executor) [process, below of=mq, fill=green!30] {Executor};
+			\node (dep) [decision, right of=executor, xshift=3cm, fill=yellow!30] {Dep Satisfied? };
+			\node (wq) [process, below of=dep, yshift=-2cm, fill=purple!30] {Wait Queue};
+			\node (terminate) [startstop, below of=executor, yshift=-2cm, fill=orange!30] {Terminate};
+			
+			% Arrows
+			\draw [arrow] (root) -- node[right] {Enqueue} (mq);
+			\draw [arrow] (mq) -- node[right] {Dequeue} (executor);
+			\draw [arrow] (executor.east) -- node[above] {If children} (dep.west);
+			\draw [arrow] (executor.south) -- node[right] {If no children} (terminate.north);
+			
+			% Rectangular arrow for "No" path
+			\draw [arrow] (dep.east) -- node[above] {No} ++(0.5,0) --node[midway,left] {Enqueue} ++(0,-3.8) -- (wq.east);
+			
+			% Arrow back from WQ
+			\draw [arrow] (wq.west) -- ++(-0.5,0) -- ++(-0.3, 0) -- node[midway,right] {Dequeue} ++(0.0, 2) -- ++(2.3,0) -- (dep.south);
+			
+			% "Yes" path looping back to MQ
+			\draw [arrow] (dep.north) |- node[right] {Yes} (mq.east) node[right, above]{\quad\quad\quad\quad\quad\quad\quad\quad Enqueue};
+			
+		\end{tikzpicture}
+		\caption{Flowchart for Task Execution}
+		\label{fig:flowchart}
+	\end{subfigure}
+	\hfill
+	% Second Diagram
+	\begin{subfigure}{0.45\textwidth}
+		%\centering
+		\begin{tikzpicture}[node distance=1cm and 0.5cm, scale=0.55, transform shape]
+			% Nodes - Row 1
+			\node[draw, circle, fill=lightblue] (T11) at (0,0) {$T_{1,1}$};
+			\node[draw, circle, fill=lightblue] (T12) at (1.4,-1.2) {$T_{1,2}$};
+			\node[draw, circle] (T13) at (2.6,-1.2) {$T_{1,3}$};
+			\node[draw, circle] (T14) at (3.8,-1.2) {$T_{1,4}$};
+			\node[draw, circle] (T15) at (4.9,-1.2) {$T_{1,5}$};
+			
+			% Nodes - Row 2
+			\node[draw, circle, fill=lightblue] (T22) at (1.4,-2.5) {$T_{2,2}$};
+			\node[draw, circle, fill=lightblue] (T23) at (2.6,-3.5) {$T_{2,3}$};
+			\node[draw, circle] (T24) at (3.8,-3.5) {$T_{2,4}$};
+			\node[draw, circle] (T25) at (4.9,-3.5) {$T_{2,5}$};
+			
+			% Nodes - Row 3
+			\node[draw, circle, fill=lightblue] (T33) at (2.6,-4.8) {$T_{3,3}$};
+			\node[draw, circle, fill=lightblue] (T34) at (3.8,-5.8) {$T_{3,4}$};
+			\node[draw, circle] (T35) at (4.9,-5.8) {$T_{3,5}$};
+			
+			% Nodes - Row 4
+			\node[draw, circle, fill=lightblue] (T44) at (3.8,-7.1) {$T_{4,4}$};
+			\node[draw, circle, fill=lightblue] (T45) at (4.9,-8.1) {$T_{4,5}$};
+			
+			% Nodes - Row 5
+			\node[draw, circle, fill=lightblue] (T55) at (4.9,-9.7) {$T_{5,5}$};
+			
+			% Edges
+			\draw[->] (T11) -- (T12);
+			\draw[->] (T12) -- (T22);
+			\draw[->] (T13) -- (T23);
+			\draw[->] (T14) -- (T24);
+			\draw[->] (T15) -- (T25);
+			\draw[->, bend left] (T11) to (T13);
+			\draw[->, bend left] (T11) to (T14);
+			\draw[->, bend left] (T11) to (T15);
+			
+			\draw[->] (T22) -- (T23);
+			\draw[->] (T24) -- (T34);
+			\draw[->] (T25) -- (T35);
+			\draw[->, bend left] (T22) to (T24);
+			\draw[->, bend left] (T22) to (T25);
+			
+			\draw[->] (T23) -- (T33);
+			\draw[->, bend left] (T33) to (T34);
+			\draw[->, bend left] (T33) to (T35);
+			
+			\draw[->] (T34) -- (T44);
+			\draw[->] (T35) -- (T45);
+			\draw[->, bend left] (T44) to (T45);
+			
+			\draw[->] (T45) -- (T55);
+		\end{tikzpicture}
+            \caption{TaskGraph for Triangular System}
+		\label{fig:task_graph}
+	\end{subfigure}
+	
+	\caption{Task Execution Flowchart and Task Graph}
+	\label{fig:comparison}
+\end{figure}
+
+\subsection{Optimizing Thread Workload for Parallel Task Execution}
+%\vspace{-0.1cm}
+Even though all the tasks $T_{i,j}$ describe the availability of parallel tasks for the threads, however, the call to the kernel \texttt{update\_trailing\_non\_pivot\_row} only updates a single non-pivot row. We, therefore, want a mechanism to control the amount of work per thread. We introduce two control parameters $\alpha$ and $\beta$ and design two new kernels \hyperref[alg:complete_task1]{Task 1} and \hyperref[alg:complete_task2]{Task 2}, which allows us to increase/decrease the amount of work available per thread by coalescing smaller tasks into larger chunks. The parameter $\beta$ determines how many non-pivot rows each thread updates simultaneously using the \texttt{update\_trailing\_non\_pivot\_row} kernel, rather than processing one row at a time. The parameter $\alpha$ controls the number of iterations in which these $\beta$ rows are updated once the pivot computations for the $\alpha$ rows are complete. Accordingly, \hyperref[alg:complete_task1]{Task 1} performs $\alpha$ pivot computations, enabling efficient batched updates of non-pivot rows in chunks of $\beta$ (\hyperref[alg:complete_task2]{Task 2}) over $\alpha$ iterations.
+
+\subsection{DAG Scheduling using Barriers}
+Given the task graph $G = (V, E)$ in \hyperref[fig:task_graph]{Fig. 1(b)}, where $V$ represents the set of nodes and $E$ represents the set of directed edges.  A directed edge $(i, j)$ between two task nodes $t_i$ and $t_j$ indicates that $t_i$ must be completed before $t_j$ can commence. A straightforward approach to schedule the DAG in \hyperref[fig:task_graph]{Fig. 1(b)} across multiple processors while preserving the dependencies is to use \textbf{barriers}—a synchronization mechanism that ensures all threads reach a specific point before proceeding further.  In \hyperref[fig:task_graph]{Fig. 1(b)}, each task \(T_{i,j}\) depends on both \(T_{i,i}\) and \(T_{i-1,j}\), necessitating two synchronization points:  
+%\subsection{Discuss about thread load/increasing the work per thread}
+\begin{algorithm}
+	\caption{Function: Task 1}\label{alg:complete_task1}
+	\begin{algorithmic}[1]
+		\State \textbf{Input:} 
+		\begin{itemize}
+                \item Matrix \texttt{mat} of size $m\times n$, $pivot\_start$, $row\_chunk\_start$.
+		\end{itemize}
+		\State \textbf{Global:} \texttt{global\_up\_array}, \texttt{global\_b\_array}, \texttt{$\alpha$}, \texttt{$\beta$}.
+		\State $pivot\_end \gets pivot\_start + \alpha $
+		\State $row\_chunk\_end \gets row\_chunk\_start + \beta$
+		\For{$lpivot = pivot\_start$ \textbf{to} $pivot\_end-1$}
+		\State $(up,\, b) \gets \Call{\texttt{update\_pivot\_row}}{mat,\, n,\, lpivot}$
+		\If{$up$ or $b$ is \textbf{undefined}}
+		\State \textbf{continue}
+		\EndIf
+		\State \texttt{global\_up\_array}[lpivot] $\gets up$
+		\State \texttt{global\_b\_array}[lpivot] $\gets b$
+		\For{$j = lpivot+1$ \textbf{to} $row\_chunk\_end-1$}
+		\State \Call{\texttt{update\_trailing\_non\_pivot\_row}}{mat,\, n,\, lpivot,\, j,\, up,\, b}
+		\EndFor
+		\EndFor
+		\State \textbf{Output:} Updated matrix \texttt{mat}.
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{itemize}
+    \item A barrier after \(T_{i,i}\) ensures that the \texttt{update\_pivot\_row} kernel completes before executing parallel tasks \(T_{i,j}\).  
+    \item A second barrier at the end of each iteration ensures that all tasks \(T_{i,j}\) complete before proceeding to the next iteration, as \(T_{i+1,j}\) depends on \(T_{i,j}\).  
+\end{itemize}  
+
+However, barriers impose a rigid execution order, limiting parallel efficiency. For instance, if \(T_{i,j}\) belonging to a critical path completes, the next \(T_{i+1,i+1}\) could begin execution immediately, which after completion can unleash more parallel tasks from the next level. Yet, due to barriers, all threads must wait for the slowest task to complete, even when additional work is available. 
+\begin{algorithm}
+	\caption{Function: Task 2}
+	\label{alg:complete_task2}
+	\begin{algorithmic}[1]
+		\State \textbf{Input:} 
+		\begin{itemize}
+			\item Matrix \texttt{mat} of size $m\times n$, $pivot\_start$, $row\_chunk\_start$.
+		\end{itemize}
+		\State \textbf{Global:} \texttt{global\_up\_array}, \texttt{global\_b\_array}, \texttt{$\alpha$}, \texttt{$\beta$}.
+		\State $pivot\_end \gets pivot\_start + \alpha $
+		\State $row\_chunk\_end \gets row\_chunk\_start + \beta$
+		\For{$lpivot = pivot\_start$ \textbf{to} $pivot\_end-1$}
+		\State \(up \gets global\_up\_array[lpivot]\)
+		\State \(b \gets global\_b\_array[lpivot]\)
+		\For{$j = lpivot+1$ \textbf{to} $row\_chunk\_end-1$}
+		\State \Call{\texttt{update\_trailing\_non\_pivot\_row}}{mat,\, n,\, lpivot,\, j,\, up,\, b}
+		\EndFor
+		\EndFor
+		\State \textbf{Output:} Updated matrix \texttt{mat}.
+	\end{algorithmic}
+\end{algorithm}
+\subsection{DAG Scheduling using LockFree Queues}
+\label{sec:proposed_alg}
+A key observation from \hyperref[fig:task_graph]{Fig. 1(b)} is that traversing the critical path (highlighted nodes) allows more tasks \(T_{i,j}\) to be executed in parallel across different levels. This approach reduces synchronization overhead by requiring only a single dependency check, specifically in \(T_{i-1,j}\). Based on this insight, we propose a dual-queue scheduling mechanism for DAG execution: one queue handles the parallel generation of tasks, while the other ensures that dependencies are satisfied before execution.
+
+As illustrated in \hyperref[fig:flowchart]{Fig. 1(a)}, our approach leverages two centralized, lock-free global queues—\texttt{main\_queue} and \texttt{wait\_queue}—which are shared among all threads for task scheduling. The main queue contains tasks that any available thread can immediately execute. When a critical path task \(T_{i,i}\) is completed, it loads its child tasks \(T_{i,j}\) into the \texttt{main\_queue} after verifying the completion of their parent \(T_{i-1,j}\). If the parent has already completed the task, the child task is immediately available for execution. Otherwise, the task is placed in the wait queue, allowing threads to continue executing readily available tasks from the main queue instead of waiting for the pending parent task to complete. This strategy, as depicted in \hyperref[alg:thdwork]{Algorithm 5} ensures that threads prioritize active execution over spinning or waiting for dependencies to resolve, thereby improving overall responsiveness. Upon completing a task from the main queue, a thread checks the wait queue for deferred tasks. If a task’s parent has completed, it is moved to the main queue for immediate execution. Otherwise, it is enqueued back into the wait queue for re-evaluation in subsequent iterations.
+
+\subsection{DAG scheduling using Priority queues}
+
+In Baskaran's work \cite{baskaran2009compiler}, each vertex in the DAG is associated with two metrics: top level (\texttt{topL}) and bottom level (\texttt{bottomL}). For any vertex \(v\) in DAG \(G\), the \texttt{topL(v)} is defined as the longest length of the path from the root node to the vertex \(v\), excluding \(v\). 
+\begin{algorithm}
+	\caption{Thread Work}\label{alg:thdwork}
+	\begin{algorithmic}[1]
+		\State \textbf{Global:} lockfree \texttt{main\_queue}, \texttt{wait\_queue}; dependency\_table \texttt{tb}
+		\While{\textbf{true}}
+		\If{\texttt{main\_queue} $\neq \emptyset$}
+		\State curr\_task $\gets$ \texttt{main\_queue}.pop()
+		\If{curr\_task.type = 1}
+		\State Task1(curr\_task.params)
+		\State \texttt{tb}[curr\_task] = True
+		\For{child $\in$ curr\_task.children}
+		\If{$\forall p \in$ child.parent, \texttt{tb}[p] = \texttt{True}}
+		\State \texttt{main\_queue}.push(child)
+		\Else
+		\State \texttt{wait\_queue}.push(child)
+		\EndIf
+		\EndFor
+		\ElsIf{curr\_task.type = 2}
+		\State Task2(curr\_task.params)
+		\State \texttt{tb}[curr\_task] = True
+		\If{curr\_task $\in$ CriticalPath}
+		\State task1 = curr\_task.children[0]
+		\State \texttt{main\_queue}.push(task1)
+		\EndIf
+		\EndIf
+		\EndIf
+		\If{\texttt{wait\_queue} $\neq \emptyset$}
+		\State old\_task $\gets$ \texttt{wait\_queue}.pop()
+		\If{$\forall p \in$ old\_task.parent, \texttt{tb}[p] = \texttt{True}}
+		\State \texttt{main\_queue}.push(old\_task)
+		\Else
+		\State \texttt{wait\_queue}.push(old\_task)
+		\EndIf
+		\EndIf
+		\If{$\exists$ \texttt{task} $\in$ \texttt{tb}, \texttt{tb}[\texttt{task}] = \texttt{False}}
+		\State \textbf{continue}
+		\Else
+		\State \textbf{break}
+		\EndIf
+		\EndWhile
+	\end{algorithmic}
+\end{algorithm}
+
+Similarly, \texttt{bottomL(v)} is defined as the length of the longest path from \(v\) to the leaf node (vertex with no children). The tasks are prioritized based on the sum of \texttt{topL(v)} and \texttt{bottomL(v)} or just the \texttt{bottomL(v)}. Nodes that are part of the critical path will have higher priority, and as we move away from the critical path, the priority value of the nodes decreases. We use this technique to assign priority values to each node in the task graph, ensuring that critical-path tasks are executed earlier to accelerate the release of dependent parallel tasks.
+
+Our proposed approach in Section \ref{sec:proposed_alg} employs standard lock-free queues that execute DAG nodes without prioritization. Replacing them with global lock-free \textbf{priority queues} allows nodes to be ordered based on predefined criteria. This prioritization ensures that critical-path nodes execute earlier, thereby accelerating the release of dependent parallel tasks. However, maintaining priority order introduces overhead from rebalancing the data structure, which can degrade performance for large queues. Our implementation utilizes Intel TBB \textbf{concurrent priority queues} and \textbf{concurrent queues} to optimize task scheduling.
+
+
+
+% While the above approach employs standard lock-free queues, where DAG nodes execute in a non-prioritized manner, replacing these with global lock-free \textbf{priority queues} introduces greater scheduling flexibility. Specifically, priority queues enable certain nodes to be scheduled before others based on predefined criteria.  
+
+% A key application of this strategy is \textbf{critical path scheduling}, where nodes along the critical path (highlighted in \hyperref[fig:task_graph]{Fig. 1(b)}) are assigned higher priority. This ensures that critical-path nodes execute earlier, accelerating the availability of dependent parallel tasks. Since numerous parallel tasks \(T_{i,j}\) rely on the completion of critical-path tasks \(T_{i,i}\), prioritizing their execution significantly increases parallelism in comparison to priority free scheduling. 
+
+
+
+
+
+
+
+
+
+
+
+
+%The most simple approach in scheduling the DAG given in \hyperref[fig:task_graph]{Fig. 1(b)} on multiple processors such that it respects the parent dependencies of each node is by using barriers. A barrier is a synchronization method for threads where a group of threads or processes must stop at this point and cannot proceed with the execution of any further instructions until all the threads reach the barrier.  In \hyperref[fig:task_graph]{Fig. 1(b)}, since we already know that for any task $T_{i, j}$ there are two dependencies, one from $T_{i, i}$ and other from $T_{i-1, j}$ which needs to be completed before task $T_{i, j}$ can proceed, schedule the DAG by employing barriers - 1. After the task $T_{i, i}$ so that the kernel $update\_pivot\_row$ gets completed before all the parallel tasks $T_{i, j}$ can get executed parallely. 2. There should be another barrier at the end of each iteration such that if a thread finishes a task $T_{i, j}$ it should wait for the other threads to finish the other remaining $T_{i, j}$ tasks before proceeding with the next iteration because of the dependency of $T_{i-1, j}$ on $T_{i, j}$. However, barriers provide a very constrained way of executing parallel tasks in a DAG, if $T_{i, j}$ is finished we can proceed to execute $T_{i+1, j}$ if the next critical path task $T_{i+1, i+1}$ is already finished but due to barriers all the threads will wait for the slowest thread to finish even if some more tasks can be executed further across the iteration.
