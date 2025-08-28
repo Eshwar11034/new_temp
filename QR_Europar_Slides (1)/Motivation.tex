@@ -1,0 +1,25 @@
+\begin{frame}{Motivation: Optimization in Practice}
+	\pause 
+	\begin{columns}[c,onlytextwidth]
+		\column{0.60\textwidth}
+		\begin{block}{Context}
+		  \begin{itemize}\setlength{\itemsep}{4pt}
+		    \item Many applications in \textbf{ML, robotics, and scientific computing} rely on nonlinear optimization.
+		    \item \textbf{NLopt} is a widely used library providing optimization algorithms.
+		    \item Among them, \textbf{SLSQP} (Sequential Least Squares Quadratic Programming) is popular for constrained problems.
+		  \end{itemize}
+		\end{block}
+	
+		\column{0.40\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance=1cm and 0.8cm, scale=0.65, transform shape]
+		  \node[draw, rounded corners, fill=blue!15, text width=2.8cm, align=center] (apps) {Applications \\ (ML, Robotics, Control)};
+		  \node[draw, rounded corners, fill=green!15, text width=2.8cm, align=center, below=of apps] (nlopt) {Optimization Library: \\ \textbf{NLopt}};
+		  \node[draw, rounded corners, fill=orange!15, text width=2.8cm, align=center, below=of nlopt] (slsqp) {Algorithm: \\ \textbf{SLSQP}};
+		  
+		  \draw[->, thick] (apps) -- (nlopt);
+		  \draw[->, thick] (nlopt) -- (slsqp);
+		\end{tikzpicture}	
+	\end{columns}
+  
+\end{frame}

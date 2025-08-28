@@ -1,0 +1,25 @@
+% Slide: Conclusion & Future Work
+\begin{frame}{Conclusion}
+
+  \begin{columns}[c,onlytextwidth]
+		% ----- LEFT: What We Achieved -----
+		\pause
+		\column{0.43\textwidth}
+		\begin{block}{What We Achieved}
+		  \begin{itemize}
+		    \item Modeled the sequential QR algorithm as a task-based DAG to expose parallelism.
+		    \item Designed a novel, asynchronous two-queue scheduler to execute the DAG without barriers.
+		    \item Integrated our high-performance parallel QR into the NLOPT SLSQP solver.
+		    \item Demonstrated a \textbf{>15x end-to-end speedup} on large-scale problems.
+		  \end{itemize}
+		\end{block}
+		
+		\pause
+		\column{0.50\textwidth}
+  \begin{alertblock}{Overall Impact}
+    \centering
+    Our work delivers a lightweight, open-source scheduler that significantly accelerates SLSQP for the common, medium-sized workloads where performance is most critical.
+  \end{alertblock}
+    \end{columns}
+
+\end{frame}

@@ -1,0 +1,44 @@
+% Slide: Defining alpha, beta, and Priority (Corrected Layout)
+\begin{frame}{Tuning for Performance: Granularity \& Priority}
+
+	\begin{columns}[T,onlytextwidth]
+	% ----- LEFT: Defining alpha and beta -----
+	
+	\pause 
+	\column{0.45\textwidth}
+	\begin{block}{Task Granularity}
+	  We tune two parameters to control the amount of work per task:
+	  \begin{itemize}
+	    \item \textbf{$\alpha$}: Number of pivots per task.
+	    \item \textbf{$\beta$}: Number of row updates per task.
+	  \end{itemize}
+	\end{block}
+	
+	\begin{alertblock}{The Trade-off}
+	  \centering
+	  \large
+	  Small $(\alpha, \beta)$ \quad vs. \quad Large $(\alpha, \beta)$ \\
+	  \small
+	  (More Overhead) \quad (Load Imbalance)
+	\end{alertblock}
+	
+	% ----- RIGHT: Explaining Priority Assignment -----
+	\pause 
+	\column{0.45\textwidth}
+	\begin{block}{Priority Scheduling}
+	  We prioritize tasks based on their \textbf{Bottom Level} (`bottomL`) in the DAG.
+	  \begin{itemize}
+	    \item Tasks on the critical path have the highest priority and are executed first.
+	  \end{itemize}
+	\end{block}
+	
+	\begin{alertblock}{The Cost of Priority}
+	  Priority queues have overhead from rebalancing. This cost is:
+	  \begin{itemize}
+	    \item \textbf{High} for many small tasks.
+	    \item \textbf{Low} for fewer large tasks.
+	  \end{itemize}
+	\end{alertblock}
+	
+	\end{columns}
+\end{frame}

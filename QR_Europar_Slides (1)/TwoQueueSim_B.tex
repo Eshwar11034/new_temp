@@ -1,0 +1,61 @@
+% Simulation Slide 2: Parallel Dequeue ("Hub and Spokes" Layout)
+\begin{frame}{Simulation: Parallel Dequeue}
+  \begin{columns}[c,onlytextwidth]
+
+    % ----- LEFT: Text explaining the current state -----
+    \column{0.4\textwidth}
+    \begin{alertblock}{Step 4: Peak Parallel Execution}
+      Each thread independently dequeues a task, from the readily executable tasks from the main queue thereby achieving maximum parallelism.
+    \end{alertblock}
+
+    % ----- RIGHT: The new layout designed for zero clutter -----
+    \column{0.6\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize, every node/.style={transform shape}, scale=0.95]
+      % Styles
+      \tikzset{pool/.style={draw, thick, ellipse, fill=accent!15, minimum width=2.8cm, minimum height=2cm}}
+      \tikzset{thread_icon/.style={draw, circle, fill=accent!30, minimum size=0.5cm}}
+      \tikzset{active_thread/.style={thread_icon, fill=accent!60, text=white, minimum size=0.6cm}}
+      \tikzset{task_ready/.style={draw, rectangle, rounded corners=1pt, fill=updategreen!70, minimum width=1.2cm, minimum height=0.6cm}}
+      \tikzset{queue_box/.style={draw, thick, fill=gray!10}}
+      
+      % --- Layout Elements ---
+      % Main Queue is the central "hub"
+      \node[anchor=south] at (0, 2.5) {Main Queue};
+      \draw[queue_box] (-2.5, 1.8) rectangle (2.5, 2.4);
+      \node[font=\tiny] at (-2.5, 1.5) {(Front)};
+      \node[font=\tiny] at (2.5, 1.5) {(Rear)};
+      
+      % Thread Pool is off to the side, empty
+      \node[pool] (pool) at (4, -1.5) {};
+      \node[anchor=north] at (pool.south) {Thread Pool};
+      
+      % Wait Queue is at the bottom
+      \node[anchor=south] at (0, -1.8) {Wait Queue};
+      \draw[queue_box] (-2.5, -2.5) rectangle (2.5, -2.1);
+      \node[font=\tiny] at (-2.5, -2.8) {(Front)};
+      \node[font=\tiny] at (2.5, -2.8) {(Rear)};
+      
+      % --- Active Threads are the "Spokes" ---
+      \node[active_thread] (t1) at (-2.5, 0) {\tiny T1};
+      \node[task_ready, right=1mm of t1] {$T_{1,2}$};
+      
+      \node[active_thread] (t2) at (-0.5, 0) {\tiny T2};
+      \node[task_ready, right=1mm of t2] {$T_{1,3}$};
+      
+      \node[active_thread] (t3) at (1.5, 0) {\tiny T3};
+      \node[task_ready, right=1mm of t3] {$T_{1,4}$};
+
+      \node[active_thread] (t4) at (3.5, 0) {\tiny T4};
+      \node[task_ready, right=1mm of t4] {$T_{1,5}$};
+
+      % --- Arrows showing the parallel dequeue action ---
+      % Each arrow has its own clean path
+      \draw[-{Stealth}, thick] (-1.8, 1.8) to[bend right] (t1);
+      \draw[-{Stealth}, thick] (-0.6, 1.8) to[bend right] (t2);
+      \draw[-{Stealth}, thick] (0.6, 1.8) to[bend right] (t3);
+      \draw[-{Stealth}, thick] (1.8, 1.8) to[bend right] (t4);
+      
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}

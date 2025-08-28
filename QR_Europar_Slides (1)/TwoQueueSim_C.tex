@@ -1,0 +1,175 @@
+% Simulation Slide 3, Step 1: The Initial State (Final Revised Version)
+\begin{frame}{Simulation: Navigating the Dependency Graph}
+  \begin{columns}[c,onlytextwidth]
+
+    % ----- LEFT: Text for the initial state -----
+    \column{0.38\textwidth}
+    \only<1>{
+      \begin{alertblock}{Mid-Execution Step}
+      After executing $T_{2, 2}$ its children's dependencies are checked and enqueued to the main queue if its dependency is satisfied or else its enqueued into the wait queue.
+        
+      \end{alertblock}
+    }
+    \only<2>{
+      \begin{alertblock}{Step 5: Dependency Aware Enqueue Process}
+        Thread \textbf{T3} is processing its task from the previous level.
+        So the children task $T_{2, 4}$ gets pushed to the wait queue as its parent task is incomplete.
+      \end{alertblock}
+    }
+    \only<3>{
+      \begin{alertblock}{Step 6: Continued Execution with Readily Available Tasks}
+        The remaining threads can pick up other immediately executable tasks from the main queue.
+      \end{alertblock}
+    }
+        \only<4>{
+      \begin{alertblock}{Step 7: Next Pivot Push}
+        \textbf{T1} finishes $T_{2, 3}$ and enqueues its child, the new pivot \textbf{$T_{3,3}$}. Also, $T_{1, 4}$ is complete in the mean time so its child $T_{2, 4}$ can be safely pushed to the main queue.
+    \end{alertblock}
+    }
+        \only<5>{
+      \begin{alertblock}{Step 8: Promotion Admist Work}
+        Since, the parent of $T_{2, 4}$ was complete, $T_{2, 4}$ got promoted from the wait queue to the main queue as an immediately executable task.
+      \end{alertblock}
+    }
+
+        \only<6>{
+      \begin{alertblock}{Step 9: Further Execution with Immediately Executable Tasks}
+        The threads can pick up more executable tasks from the main queue and continue executing the nodes of the DAG in a non-blocking manner.
+      \end{alertblock}
+    }
+
+
+    % ----- RIGHT: The static diagram with your new layout and dashed arrows -----
+    \column{0.61\textwidth}
+    \centering
+    \begin{tikzpicture}[font=\scriptsize, every node/.style={transform shape}, scale=0.95]
+      % Styles
+      \tikzset{pool/.style={draw, thick, ellipse, fill=accent!15, minimum width=2.8cm, minimum height=2cm}}
+      \tikzset{thread_icon/.style={draw, circle, fill=accent!30, minimum size=0.5cm}}
+      \tikzset{active_thread/.style={thread_icon, fill=accent!60, text=white, minimum size=0.6cm}}
+      \tikzset{task_ready/.style={draw, rectangle, rounded corners=1pt, fill=updategreen!70, minimum width=1cm, minimum height=0.6cm}}
+      \tikzset{task_wait/.style={draw, rectangle, rounded corners=1pt, fill=gray!50, minimum width=1cm, minimum height=0.6cm}}
+      \tikzset{queue_box/.style={draw, thick, fill=gray!10, minimum width=5cm, minimum height=0.8cm}}
+      
+      % --- Layout Elements ---
+      \node[pool] (pool) at (3.5, 0) {}; \node[anchor=north] at (pool.south) {Thread Pool};
+      \node[queue_box] (mainq) at (-0.5, 2.1) {}; \node[anchor=south] at (mainq.north) {Main Queue};
+      \node[font=\tiny] at ([yshift=-0.3cm]mainq.south west) {(Front)}; \node[font=\tiny] at ([yshift=-0.3cm]mainq.south east) {(Rear)};
+      \node[queue_box] (waitq) at (-0.5, -2.1) {}; \node[anchor=north] at ([yshift=0.4cm]waitq.north) {Wait Queue};
+      \node[font=\tiny] at ([yshift=-0.3cm]waitq.south west) {Front)}; \node[font=\tiny] at ([yshift=-0.3cm]waitq.south east) {(Rear)};
+      
+      % --- Initial State Elements ---
+       \only<1>{
+      % Active Threads (T3 and T4)
+      \node[active_thread] (t3) at (0, 0.7) {\tiny T3}; \node[task_ready, right=1mm of t3] {$T_{1,4}$};
+      \node[active_thread] (t4) at (0, -0.7) {\tiny T4}; \node[task_ready, right=1mm of t4] {$T_{1,5}$};
+      
+      \node[thread_icon] (t2_idle) at ($(pool.center)+(0,0.5)$) {\tiny T2};
+      
+      % Tasks in Main Queue
+      \node[task_ready] (t22_q) at ([xshift=-1.8cm]mainq.center) {$T_{2,2}$};
+          \node[active_thread] (active_t1) at (-2.5, -0.7) {\tiny T1};
+        \draw[-{Stealth}, thick] (mainq.west) to[bend right=60] node[midway, left] {Dequeue} (active_t1);
+
+      }
+
+
+ % --- STATE 2 (After First Click - Corrected) ---
+
+
+      % --- STATE 3 (After Second Click - Corrected) ---
+      \only<2>{
+        % T3 is still active, executing the parent task
+        \node[active_thread] (t3) at (0, 0.7) {\tiny T3}; \node[task_ready, right=1mm of t3] {$T_{1,4}$};
+        \node[active_thread] (active_t2) at (-2.5, -0.7) {\tiny T1};
+        % The fail arrow appears, and T2,4 moves to the Wait Queue
+    
+        \node[task_wait] (t24_q)at ([xshift=1.8cm]waitq.center) {$T_{2,4}$};
+        \draw[-{Stealth}, thick, depred, dashed] (active_t2) to[out=180, in=220] 
+        node[midway, below left] {Fail} (t24_q.south);
+        \node[task_ready] (t23_q) at ([xshift=0.6cm]mainq.west) {$T_{2,3}$};
+        \node[task_ready] (t25_q) at ([xshift=1.6cm]mainq.west) {$T_{2,5}$};
+          \node[thread_icon] (t4_idle) at ($(pool.center)+(0,-0.5)$) {\tiny T4};
+        \node[thread_icon] (t2_idle) at ($(pool.center)+(0,0.5)$) {\tiny T2};   
+         \draw[-{Stealth}, thick, dashed] (active_t1) to[bend right=60] 
+        node[midway, below right] {Pass} (t25_q.east);
+
+      }
+      % --- STATE 4 (After Third Click) ---
+      \only<3>{
+        \node[active_thread] (t3) at (0, 0.7) {\tiny T3}; \node[task_ready, right=1mm of t3] {$T_{1,4}$};
+        \node[thread_icon] at ($(pool.center)+(0.8,0.2)$) {\tiny T4};
+       
+        \node[active_thread] (active_t1) at (-2.5, -0.7) {\tiny T1};
+        \draw[-{Stealth}, thick] (mainq.west) to[bend right=60] node[midway, left] {Dequeue} (active_t1);
+
+        \node[active_thread] (active_t2) at (-1.5, -0.7) {\tiny T2};
+        
+        \node[task_ready] (t23_q) at ([xshift=0.6cm]mainq.west) {$T_{2,3}$};
+
+        \node[task_ready] (t25_q) at ([xshift=1.6cm]mainq.west) {$T_{2,5}$};
+    
+        % T2,4 is still in the Wait Queue
+        \node[task_wait] at ([xshift=1.8cm]waitq.center) {$T_{2,4}$};
+        
+      \draw[-{Stealth}, thick] (t25_q.east) to[bend left=60]  (active_t2);
+      }
+      % --- STATE 5 (After Fourth Click) ---
+      \only<4>{
+       
+
+        \node[thread_icon] at ($(pool.center)+(0.8,0.2)$) {\tiny T3};
+        \node[thread_icon] at ($(pool.center)+(-0.5,-0.5)$) {\tiny T4};
+        \node[active_thread] (active_t2) at (-2.5, -0.7) {\tiny T2};
+        \node[task_ready, right=1mm of active_t2] {$T_{2,5}$};
+
+        \node[task_ready] at ([xshift=-0.8cm]mainq.east) {$T_{3,3}$};
+
+        \node[active_thread] (t3) at (0, 0.7) {\tiny T1}; 
+        \draw[-{Stealth}, thick] (0.3, 0.7) to[bend right=30] node[midway, right] {enqueue}([xshift=1.4cm]mainq.south);
+        
+        \node[task_ready] at ([xshift=0.8cm]waitq.west) {$T_{2,4}$};
+      }
+
+      \only<5>{
+        % T1 and T3 are idle
+
+        \node[thread_icon] at ($(pool.center)+(0.8,0.2)$) {\tiny T4};
+        \node[thread_icon] at ($(pool.center)+(0.1,0.2)$) {\tiny T2};
+
+        \node[active_thread] (active_t2) at (-2.5, -0.7) {\tiny T1};
+
+        \draw[-{Stealth}, thick, updategreen, dashed] (waitq.west) to[bend left =45] (active_t2);
+        \draw[-{Stealth}, thick, updategreen, dashed] (active_t2) to[bend right=30] node[midway, left] {Promote} ([xshift = 1.6cm]mainq.south);
+        \node[task_ready] at ([xshift=1.8cm]mainq.center) {$T_{2,4}$};
+
+      \node[active_thread] (t4) at (0, -0.7) {\tiny T3}; \node[task_ready, right=1mm of t4] {$T_{3,3}$};
+      }
+
+      % --- STATE 7 (After Sixth Click) ---
+    \only<6->{
+        % Idle threads remaining in the pool
+        \node[thread_icon] at ($(pool.center)+(-0.8,0.2)$) {\tiny T3};
+        
+        % T2 and T4 are now active, taking the NEW work
+        \node[active_thread] (active_t2) at (-2.5, -0.7) {\tiny T1};
+        \node[active_thread] (active_t1) at (0, -0.7) {\tiny T4};
+        \node[active_thread] (active_t3) at (-3.5, 0.7) {\tiny T2};
+        
+        % Arrows showing T2 and T4 dequeuing the new tasks
+        \draw[-{Stealth}, thick] ([xshift=0.4cm]mainq.center) to[bend right = 15] (active_t2);
+        \draw[-{Stealth}, thick] ([xshift=1.8cm]mainq.center) to[bend right] (active_t1);
+        \draw[-{Stealth}, thick] ([xshift=0.4cm]mainq.west) to[bend right = 45] (active_t3);
+        % T3 has implicitly finished T3,3 and enqueued its children
+        % The children are now in the main queue
+        \node[task_ready] at ([xshift=0.4cm]mainq.center) {$T_{3,4}$};
+        \node[task_ready] at ([xshift=1.8cm]mainq.center) {$T_{3,5}$};
+        
+        % T2,4 is also still in the queue, ready to be picked up
+        \node[task_ready] at ([xshift=-1.8cm]mainq.center) {$T_{2,4}$};
+        
+        }
+      
+\end{tikzpicture}
+\end{columns}
+\end{frame}

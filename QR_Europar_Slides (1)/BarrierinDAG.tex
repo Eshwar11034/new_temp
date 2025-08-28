@@ -1,0 +1,76 @@
+% ------------------------------------------------------------------
+% Slide: Barrier-Based Task Scheduling (concise version)
+% ------------------------------------------------------------------
+\begin{frame}{List Scheduling with Barriers}
+	\pause 
+	\begin{columns}[c,onlytextwidth]
+	
+	% ----- LEFT: Barrier logic ------------------------------------
+	\column{0.50\textwidth}
+	\begin{block}{The Barrier-Based Approach}
+	  \begin{itemize}\setlength{\itemsep}{3pt}
+	    \item Model QR as a graph of tasks ($T_{i,j}$).
+	    \item \textbf{Barrier 1}: All threads wait after pivot task ($T_{i,i}$) is completed.
+	    \item \textbf{Barrier 2}: All threads wait after all update tasks ($T_{i,j}$) finish before the next iteration.
+	  \end{itemize}
+	\end{block}
+	
+	% ----- RIGHT: Critical flaw text + figure ---------------------
+	\pause	
+	\column{0.45\textwidth}
+	\begin{alertblock}{Why Barriers Hurt Performance}
+		\begin{itemize}\setlength{\itemsep}{3pt}
+		 \item Barriers force strictly synchronous execution.
+		 \item Faster threads idle while the slowest thread finishes.
+		 \item The idle time reduces overall throughput.
+		\end{itemize}
+	\end{alertblock}
+	\end{columns}
+	
+	\pause
+	\begin{columns}
+	\column{0.70\textwidth}
+	\begin{tikzpicture}[font=\tiny, every node/.style={transform shape}, scale=0.90]
+		% Styles for different states
+		\tikzset{pivot/.style={fill=pivotblue!70, draw=pivotblue!50!black, rounded corners=1pt}}
+		\tikzset{work/.style={fill=updategreen!70, draw=updategreen!50!black, rounded corners=1pt}}
+		\tikzset{wait/.style={fill=gray!40, draw=gray!60, rounded corners=1pt}}
+		\tikzset{bar/.style={draw=depred, thick, dashed}}
+		
+		% Time Axis
+		\draw[->] (0,0) -- (9.5,0) node[anchor=north west, font=\scriptsize] {Time};
+		
+		% Thread Labels
+		\node[anchor=east, font=\scriptsize] at (-0.2, 2.5) {Thread 1};
+		\node[anchor=east, font=\scriptsize] at (-0.2, 1.9) {Thread 2};
+		\node[anchor=east, font=\scriptsize] at (-0.2, 1.3) {Thread 3};
+		\node[anchor=east, font=\scriptsize] at (-0.2, 0.7) {Thread 4};
+		
+		% --- Iteration i with new, narrower coordinates ---
+		\draw[pivot] (0.2, 2.3) rectangle node{$T_{i,i}$} (1.2, 2.7);
+		\draw[wait]  (0.2, 1.7) rectangle (1.2, 2.1);
+		\draw[wait]  (0.2, 1.1) rectangle (1.2, 1.5);
+		\draw[wait]  (0.2, 0.5) rectangle (1.2, 0.9);
+		\node[above=2pt, depred, font=\scriptsize] at (1.3, 2.8) {Barrier 1};
+		\draw[bar] (1.3, 0.3) -- (1.3, 2.8);
+		
+		\draw[work] (1.4, 2.3) rectangle node{$T_{i,j}$} (4.5, 2.7);
+		\draw[work] (1.4, 1.7) rectangle node{$T_{i,k}$} (6.5, 2.1);
+		\draw[work] (1.4, 1.1) rectangle node{$T_{i,l}$} (8.0, 1.5); % SLOWEST
+		\draw[work] (1.4, 0.5) rectangle node{$T_{i,m}$} (3.5, 0.9);
+		
+		\draw[wait] (4.5, 2.3) rectangle node{\textcolor{black}{IDLE}} (8.0, 2.7);
+		\draw[wait] (6.5, 1.7) rectangle node{\textcolor{black}{IDLE}} (8.0, 2.1);
+		\draw[wait] (3.5, 0.5) rectangle node{\textcolor{black}{IDLE}} (8.0, 0.9);
+		
+		\node[above=2pt, depred, font=\scriptsize] at (8.1, 2.8) {Barrier 2};
+		\draw[bar] (8.1, 0.3) -- (8.1, 2.8);
+		
+		\draw[pivot] (8.2, 2.3) rectangle node{$T_{i+1,i+1}$} (9.2, 2.7);
+	\end{tikzpicture}
+	
+	\column{0.25\textwidth}
+	{\scriptsize \emph{Fig : Global barriers introduce idle time and squander parallel resources.}}
+	\end{columns}
+
+\end{frame}
