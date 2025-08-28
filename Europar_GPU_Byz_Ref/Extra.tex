@@ -1,0 +1,49 @@
+%---------------------------------------------------------
+\section*{Extras}
+%---------------------------------------------------------
+
+%------------------------------------------------
+\begin{frame}{Why We Need \BVCAS}
+\begin{itemize}
+  \item In Byzantine settings, simple registers are unsafe:
+    \begin{itemize}
+      \item A correct value can be overwritten by a faulty process.
+      \item Leads to inconsistent states and broken agreement.
+    \end{itemize}
+  \item Sticky bits resist corruption but support only binary values.
+  \item \BVCAS extends the idea to multi-valued consensus.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Why Assumptions are Reasonable}
+\begin{itemize}
+  \item RR scheduling: baseline GPU behavior~\footfullcite{Jeon:springer:2025}.
+  \item \Fwrite{} has constant cost (fits in one phase).
+  \item \Fview{} may span multiple phases, consistent with GPU memory latency.
+  \item Restricted access via objects is common for fault-tolerant designs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Weak Byzantine Consensus (WBC)}
+\begin{definition}[\wbc] 
+	Given $n$ processes, up to $f<n$ faulty, and correct values $V_c$, the following must hold:
+	\begin{itemize}
+		\item \textbf{Termination: } Every correct process must eventually decide.
+		\item \textbf{Agreement: } All correct processes decide the same value.
+	\end{itemize}
+\end{definition}
+\begin{itemize}
+  \item Validity condition is dropped.
+  \item Even if all correct processes propose the same value, the decision could be different.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Common Value Byzantine Consensus (CVBC)}
+\begin{theorem}[\cvbc] 
+Proposed solution solves solves the \cvbc problem within $\Theta(n^2/p^2r)$ phases, for $f< \frac{n}{2p}$.
+\end{theorem}
+\end{frame}
+
