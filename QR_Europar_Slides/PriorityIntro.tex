@@ -1,0 +1,22 @@
+% Slide: Priority Scheduling & Performance Trade-offs (Revised)
+\begin{frame}{Priority Scheduling \& Performance Trade-offs}
+
+  \begin{block}{Prioritizing the Critical Path}
+    To further improve performance, we can execute more important tasks first.
+    \begin{itemize}
+      \item Inspired by the work of \textbf{Baskaran et al.}, we assign each task a priority.
+      \item The priority is based on the task's \textbf{Bottom Level} (`bottomL`)—the longest path of work remaining from that task.
+      \item This forces tasks on the \textbf{critical path} to be 
+      scheduled sooner, potentially unlocking more parallelism.
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{The Trade-off: Granularity vs. Overhead}
+    The effectiveness of the priority queue depends on the task size $(\alpha, \beta)$:
+    \begin{itemize}
+      \item \textbf{Many small tasks:} High overhead from frequent queue rebalancing.
+      \item \textbf{Fewer large tasks:} Low overhead, allowing the benefit of priority ordering to dominate.
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}

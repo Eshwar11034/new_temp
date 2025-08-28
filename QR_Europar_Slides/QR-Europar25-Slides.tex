@@ -1,0 +1,111 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ===================================================================
+% THEME AND APPEARANCE
+% ===================================================================
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% ===================================================================
+% PACKAGES
+% ===================================================================
+% Encoding & fonts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Math and Algorithms
+\usepackage{amsmath,amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode} % For the paper-style algorithm formatting
+
+% Graphics and Diagrams
+\usepackage{tikz}
+\usetikzlibrary{calc, arrows.meta, positioning, shapes.geometric, shapes.misc, fit}
+\usepackage{adjustbox} % NEW: For better scaling of figures and boxes to prevent overflows
+
+% Other utilities
+\usepackage{qrcode} % For the final artifact QR code
+\usepackage{xcolor} % NEW: Explicitly load for color definitions (though Beamer implies it)
+
+% ===================================================================
+% CUSTOM COLORS AND COMMANDS
+% ===================================================================
+% Define the consistent color scheme from your paper/previous slides
+\definecolor{pivotblue}{RGB}{32,102,170}
+\definecolor{updategreen}{RGB}{56,142,60}
+\definecolor{depred}{RGB}{198,40,40}
+\definecolor{accent}{RGB}{123,31,162}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+% A custom environment for compact bullet points if needed later
+\newenvironment{tightitem}{%
+  \begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+}{\end{itemize}}
+
+% NEW: Custom command for consistent figure captions
+\newcommand{\figcap}[1]{\vspace{1mm}{\scriptsize \emph{#1}}}
+% Add these lines to the package section of main.tex
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17} % Or your installed version
+% ===================================================================
+% PRESENTATION METADATA
+% ===================================================================
+\title[Parallel QR for SLSQP]{Efficient Task-Graph Scheduling for Parallel QR Factorization in SLSQP}
+\author{Soumyajit Chatterjee, Rahul Utkoor, Uppu Eshwar, Sathya Peri, V.K. Nandivada}
+\institute[IITH, Qualcomm, IITM]{Indian Institute of Technology, Hyderabad \\ QUALCOMM India Private Limited \\ Indian Institute of Technology, Madras}
+\date{Euro-Par 2025} % CHANGED: Updated to match paper's implied year (2025, per artifact DOI)
+
+% ===================================================================
+% DOCUMENT BODY
+% ===================================================================
+\begin{document}
+
+	% --- The Title Page ---
+	\begin{frame}
+	  \titlepage
+	\end{frame}
+	
+	% --- The Presentation Slides (Following Your New Flow) ---
+	% Note: You will need to create these .tex files as we proceed.
+	% I am using descriptive filenames based on our new plan.
+	
+	\input{Agenda}
+	\input{Motivation}
+	\input{Challenge}
+	\input{Questions-Contributions}
+	
+	% \input{Slide_Intro_NLP.tex}
+	% \input{Slide_Motivation_SLSQP.tex}
+	% \input{Slide_Bridge_to_QR.tex}
+	% \input{Slide_QR_Theory.tex}
+	\input{SequentialAlgo.tex}   % The slide with Algorithm 2
+	\input{Kernels.tex}        % The slide visualizing the kernels
+	
+	% --- Placeholders for the rest of the presentation ---
+	\input{NaiveBarrier.tex}
+	\input{QrAsDag.tex} % FIXED: Added missing .tex extension (was QrAsDag in original)
+	\input{BarrierinDAG.tex} % FIXED: Capitalization to match file name
+	\input{TwoQueueIntro.tex}
+	\input{TwoQueueSim_A.tex}
+	\input{TwoQueueSim_B.tex}
+	\input{TwoQueueSim_C.tex}
+	\input{Results.tex}
+	\input{DefineAlphaAndBeta}
+        \input{PriorityIntro}
+	\input{TuningResultsHeatmaps}
+	\input{TuningResultsBargraph}
+	\input{ScalingWithDataSize}
+	\input{ScalingWithThreads}
+	\input{SLSQP}
+	\input{Plasma}
+	\input{RelatedWork.tex}
+	\input{Conclusion.tex}
+	\input{thankyou.tex}
+
+\end{document}
+
+
+    

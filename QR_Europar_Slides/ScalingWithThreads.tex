@@ -1,0 +1,86 @@
+% Slide: Scaling with Threads (Throughput - Paper Version)
+\begin{frame}{Results: Throughput Evaluation}
+
+  \begin{columns}[c,onlytextwidth] % Vertically centered
+
+    % ----- LEFT: The throughput graph, using the exact code from your paper -----
+    \pause
+    \column{0.6\textwidth}
+    \begin{figure}
+      \centering
+      % NOTE: This is the PGFPlots code from your expts.tex file
+      \begin{tikzpicture}[scale=0.9, transform shape]
+        \begin{axis}[
+            xlabel={Threads},
+            ylabel={Execution Time (s)},
+            % Using your paper's defined style
+            myAxisStyle/.style={
+                tick label style={font=\scriptsize},
+                label style={font=\small},
+                title style={at={(0.5,1.1)}, anchor=south, font=\small},
+                grid=both,
+                width=9cm, % Adjusted for slide width
+                height=7cm
+            },
+            myAxisStyle,
+            ymode=log,
+            log basis y=10,
+            xtick={4, 24, 44, 64, 84, 100},
+            ytick={10, 100, 1000, 10000, 100000},
+            legend style={at={(axis description cs:0.5,0.5)}, anchor=west, nodes={scale=0.7, transform shape}}
+            ]
+            % Barrier Data (Full dataset)
+            \addplot[darkgreen, mark=o] coordinates {
+                (4,60.32933) (8,37.08767) (12,29.13767) (16,24.59833)
+                (20,22.211) (24,20.787) (28,20.160) (32,21.67867)
+                (36,23.511) (40,21.980) (44,21.87833) (48,24.22767)
+                (52,27.220) (56,27.414) (60,27.967) (64,28.367)
+                (68,28.91533) (72,29.754) (76,30.85733) (80,32.056)
+                (84,32.97067) (88,34.05467) (92,35.255) (96,36.73167)
+                (100,38.23033)
+            };
+            \addlegendentry{Barrier};
+            
+            % Without Priority Data (Full dataset)
+            \addplot[red, mark=square] coordinates {
+                (4,19.068) (8,9.88267) (12,6.753) (16,5.495)
+                (20,4.492) (24,3.996) (28,3.563) (32,3.33167)
+                (36,3.169) (40,3.258) (44,3.030) (48,2.87633)
+                (52,2.87967) (56,2.85433) (60,2.82233) (64,2.883)
+                (68,2.971) (72,3.06733) (76,3.15033) (80,3.26467)
+                (84,3.438) (88,3.65933) (92,3.891) (96,4.26467)
+                (100,4.668)
+            };
+            \addlegendentry{Without Priority};
+            
+            % With Priority Data (Full dataset)
+            \addplot[blue, mark=triangle] coordinates {
+                (4,19.20933) (8,10.104) (12,7.13767) (16,6.22233)
+                (20,5.67667) (24,4.84067) (28,4.59033) (32,4.56433)
+                (36,4.55167) (40,4.48067) (44,4.507) (48,4.11267)
+                (52,3.804) (56,4.03433) (60,3.80433) (64,3.72833)
+                (68,3.518) (72,3.45633) (76,3.65533) (80,3.98367)
+                (84,4.212) (88,4.07933) (92,4.493) (96,4.891)
+                (100,5.32067)
+            };
+            \addlegendentry{With Priority};
+        \end{axis}
+      \end{tikzpicture}
+    \end{figure}
+
+    % ----- RIGHT: Concise text block for analysis -----
+    \column{0.4\textwidth}
+    \begin{block}{The Experiment}
+      We measure execution time on a fixed-size matrix ($8192 \times 8192$) while increasing the number of threads.
+    \end{block}
+    
+    \pause
+    \begin{alertblock}{Key Findings}
+      \begin{itemize}
+        \item Our two-queue schedulers show strong scaling, with performance improving significantly as threads are added.
+        \item The barrier-based method scales poorly due to synchronization overhead, becoming slower after an initial improvement.
+      \end{itemize}
+    \end{alertblock}
+
+  \end{columns}
+\end{frame}

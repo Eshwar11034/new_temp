@@ -1,0 +1,29 @@
+\begin{frame}{Why Focus on QR Factorization?}
+	
+	\pause
+	\begin{columns}[T,onlytextwidth]
+		\column{0.515\textwidth}
+		\begin{block}{Runtime Cost}
+		  \begin{itemize}\setlength{\itemsep}{6pt}
+		    \item Each \textbf{SLSQP iteration} requires solving a linearized subproblem.  
+		    \item This involves a \textbf{QR factorization} of the constraint Jacobian.  
+		    \item QR calls appear repeatedly, making them the \textbf{dominant runtime cost}.  
+		    \item Naïve parallel implementations rely on \textbf{global barriers}, which stall threads and waste resources.
+		  \end{itemize}
+		  \vfill
+		\end{block}
+	
+		\pause
+	
+		\column{0.45\textwidth}
+		\begin{block}{Opportunity}
+		  The QR factorization step is not only the \textbf{bottleneck} in SLSQP,  
+		  but also a prime opportunity for optimization:
+		  \begin{itemize}\setlength{\itemsep}{6pt}
+		    \item It has a \textbf{structured task graph}.  
+		    \item Dependencies are clear and exploitable.  
+		    \item Unlocking fine-grained parallelism can \textbf{reduce barrier overheads}.
+		  \end{itemize}
+		\end{block}
+		\end{columns}
+\end{frame}
