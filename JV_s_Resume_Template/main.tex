@@ -136,12 +136,34 @@
 
 
 %-----------EDUCATION-----------
-
-\newcommand{\renderExp}[1]{
-\resumeSubheading
-      {\csname #1@Company\endcsname}{\csname #1@Start\endcsname -- \csname #1@End\endcsname}
-      {\csname #1@Designation\endcsname}{\csname #1@Location\endcsname}
-      \csname #1@Highlights\endcsname
+\makeatletter
+% Prints "Start -- End" only when both exist; trims spaces; 
+% prints single date if only one exists; prints nothing if both empty.
+\newcommand{\daterange}[2]{%
+  \edef\A{\zap@space#1 \@empty}%
+  \edef\B{\zap@space#2 \@empty}%
+  \ifx\A\@empty
+    \ifx\B\@empty
+      % both empty -> print nothing
+    \else
+      #2%
+    \fi
+  \else
+    \ifx\B\@empty
+      #1%
+    \else
+      #1\enskip--\enskip#2%
+    \fi
+  \fi
+}
+\makeatother
+\newcommand{\renderExp}[1]{%
+  \resumeSubheading
+    {\csname #1@Company\endcsname}
+    {\daterange{\csname #1@Start\endcsname}{\csname #1@End\endcsname}}
+    {\csname #1@Designation\endcsname}
+    {\csname #1@Location\endcsname}
+  \csname #1@Highlights\endcsname
 }
 
 \section{Experience}
